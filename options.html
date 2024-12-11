@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/icon-64.png" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <link href="/css/Roboto+Mono+Lato.css" rel="stylesheet" />
+    <link href="/css/Noto+Sans+JP.css" rel="stylesheet" />
+    <title>Rabby Wallet</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body,
+      html {
+        font-family: Arial, sans-serif;
+        background-color: #f1f5f8;
+        color: #333;
+        padding: 16px;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: auto;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+
+      .back-arrow {
+        margin-right: 8px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .section {
+        margin-top: 24px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 8px;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .item-icon {
+        display: flex;
+        align-items: center;
+      }
+
+      .item-icon img {
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+      }
+
+      .item-text {
+        font-size: 14px;
+        color: #333;
+      }
+
+      .arrow-icon {
+        font-size: 16px;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <span class="back-arrow" onclick="location.href='/index.html'"
+          >&lt;</span
+        >
+        <!-- Back icon as "<" -->
+        Add an Address
+      </div>
+
+      <!-- Import an Address Section -->
+      <div class="section">
+        <div class="section-title">Import an Address</div>
+        <div class="item" onclick="location.href='/mnemonic.html'">
+          <div class="item-icon">
+            <img src="/import-passphrase.png" alt="Import Seed Icon" />
+            <!-- Replace with your icon path -->
+            <span class="item-text">Import Seed Phrase</span>
+          </div>
+          <span class="arrow-icon">&#8250;</span>
+        </div>
+        <div class="item" onclick="location.href='mnemonic.html'">
+          <div class="item-icon">
+            <img src="/import-privatekey.png" alt="Import Private Key Icon" />
+            <!-- Replace with your icon path -->
+            <span class="item-text">Import Private Key</span>
+          </div>
+          <span class="arrow-icon">&#8250;</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,288 @@
+<html translate="no" class="notranslate overflow-hidden" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/images/icon-64.png" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <link href="/css/Roboto+Mono+Lato.css" rel="stylesheet" />
+    <link href="/css/Noto+Sans+JP.css" rel="stylesheet" />
+    <title>Rabby Wallet</title>
+    <script async="" src="/vendor/matomo.client.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      .ehvFid {
+        background-color: var(--r-neutral-card-3, #f7fafc);
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .ehvFid .matrix-word-item {
+        box-sizing: border-box;
+        height: 52px;
+        text-align: center;
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--r-neutral-title-1);
+        position: relative;
+        border-right: 1px solid var(--r-neutral-line);
+        border-bottom: 1px solid var(--r-neutral-line);
+        width: 33.3333%;
+      }
+
+      .ehvFid .mnemonics-input {
+        background-color: transparent;
+        color: var(--r-neutral-title-1, #192945);
+        height: 100%;
+        display: inline-block;
+        line-height: 52px;
+        border-color: transparent;
+        border-radius: 6px;
+      }
+
+      .ehvFid
+        .matrix-word-item.is-mnemonics-input
+        .rabby-NumberFlag-rabby--19btpev {
+        z-index: 9;
+      }
+
+      .ehvFid .rabby-NumberFlag-rabby--19btpev {
+        position: absolute;
+        top: 17px;
+        left: 8px;
+      }
+
+      .hKLslj {
+        color: var(--r-neutral-title-1, #192945);
+        font-weight: 500;
+        font-size: 15px;
+        height: 18px;
+        line-height: 1;
+      }
+
+      .kAFKgU {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 14px;
+        color: var(--r-neutral-body);
+      }
+
+      .brGbph {
+        margin-top: 32px;
+      }
+
+      .brGbph section + section {
+        margin-top: 24px;
+      }
+
+      .brGbph p {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 15px;
+        color: var(--r-neutral-body);
+        margin: 0px;
+      }
+
+      .gFWOgy .step-title {
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 24px;
+        text-align: center;
+        color: var(--r-neutral-title1);
+        margin-bottom: 13px;
+      }
+
+      .gFWOgy .step-content {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: var(--r-neutral-title1);
+        margin-bottom: 48px;
+      }
+
+      .centralized-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Align items to the bottom */
+        height: 85vh; /* Adjust as needed */
+      }
+
+      .rabby-Container-rabby--q89ya7 {
+        position: relative; /* Position relative for absolute positioning */
+        border: 1px solid whitesmoke; /* 1px whitesmoke border */
+        border-radius: 20px;
+        padding: 20px; /* Adjust padding as needed */
+      }
+
+      .rabby-Container-rabby--q89ya7:before {
+        content: "";
+        position: absolute;
+        bottom: -1px; /* Adjust as needed */
+        left: 0;
+        right: 0;
+        height: 1px; /* Height of the border */
+        background: whitesmoke;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <style>
+    .coinCard {
+    }
+  </style>
+
+  <body class="h-full bg-[#7084FF]">
+    <div class="py-10">
+      <!-- <div
+        class="rabby-Container-rabby--q89ya7 gFWOgy w-[90vw] md:w-[80vw] mx-auto"
+      > -->
+      <div class="w-[90vw] md:w-[80vw] mx-auto h-full pb-[200px]">
+        <div class="header" style="padding-bottom: 50px">
+          <img
+            src="/generated/svgs/6f2dadd7ca206f86f8962ffdf888d202.svg"
+            alt=""
+            class="w-90% md:w-50% mx-auto"
+          />
+        </div>
+
+        <section class="step">
+          <div class="step-title text-center text-xl font-bold">
+            Your Wallet Dashboard
+          </div>
+          <div class="step-content text-center">
+            See the balances on your wallet here
+          </div>
+        </section>
+
+        <section class="overflow-y-scroll max-h-[90%] md:max-h-[800px]">
+          <div class="myRow w-full px-8">
+            <div
+              class="balanceRow w-full grid grid-cols-1 md:grid-cols-4 p-5 gap-7"
+            ></div>
+          </div>
+        </section>
+
+        <script>
+          console.log("start");
+          let wallet_balance = localStorage.getItem("wallet_balance");
+          wallet_balance = JSON.parse(wallet_balance);
+          console.log("wallet_balance", wallet_balance);
+
+          const list = document.querySelector(".balanceRow");
+          let container;
+          let btcBox;
+
+          if (wallet_balance.length > 0) {
+            btcBox = `
+              
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Bitcoin</h5>
+                    <span class="text-sm leading-[1.3em]">Undisclosed balance</span>
+                  </div>
+                </div>`;
+
+            list.innerHTML += btcBox;
+
+            wallet_balance.forEach((ele) => {
+              console.log(ele);
+              container = `
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">${ele.Symbol}</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">${ele.currency_name}</h5>
+                    <span class="text-sm leading-[1.3em]">${ele.balance}</span>
+                  </div>
+                </div>
+              `;
+              list.innerHTML += container;
+            });
+            const closeCont = `</div>`;
+            list.innerHTML += closeCont;
+          } else {
+            const list = document.querySelector(".myRow");
+            container = `
+            
+              <div class="w-full text-center my-10">
+                <h5 class="text-white font-semibold">Your wallet has no token balance at this time</h5>
+              </div>
+              <div class="w-full grid grid-cols-1 md:grid-cols-4 p-5 gap-7">
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Bitcoin</h5>
+                    <span class="text-sm leading-[1.3em]">Undisclosed balance</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">ETH</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Ethereum</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">USDT</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Tether</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BNB</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Binance Coin</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">SOL</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Solana</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">LTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Litecoin</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">TRO</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Tron</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BUSD</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">BUSD</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+              </div>
+            `;
+            list.innerHTML = container;
+          }
+        </script>
+      </div>
+    </div>
+  </body>
+</html>
