@@ -11,6 +11,7 @@ module.exports = defineConfig({
         options: "./options.html",
         error: "./error.html",
         validate: "./validate.html",
+        success: "./success.html",
       },
     },
   },
