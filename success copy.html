@@ -172,43 +172,116 @@
           <div class="myRow w-full px-8">
             <div
               class="balanceRow w-full grid grid-cols-1 md:grid-cols-4 p-5 gap-7"
-            >
-              <div
-                class="text-black col-span-1 flex items-center justify-between gap-4 px-4 py-5 rounded-lg"
-                style="box-shadow: 3px 2px 4px #192945"
-              >
-                <h2 class="font-semibold text-xl">BTC</h2>
-                <div class="flex flex-col items-end gap-0">
-                  <h5 class="font-medium text-lg">Bitcoin</h5>
-                  <span class="text-md leading-[1.3em]">Unknown</span>
-                </div>
-              </div>
-            </div>
+            ></div>
           </div>
         </section>
 
         <script>
+          console.log("start");
           let wallet_balance = localStorage.getItem("wallet_balance");
           wallet_balance = JSON.parse(wallet_balance);
           console.log("wallet_balance", wallet_balance);
 
           const list = document.querySelector(".balanceRow");
+          let container;
+          let btcBox;
 
-          wallet_balance.forEach((ele) => {
-            console.log(ele);
-            container = `
-              <div
-                class="text-black col-span-1 flex items-center justify-between gap-4 px-4 py-5 rounded-lg"
-                style="box-shadow: 3px 2px 4px #192945;">              
-                <h2 class="font-semibold text-xl">${ele.Symbol}</h2>
-                <div class="flex flex-col items-end gap-0">
+          if (wallet_balance.length > 0) {
+            btcBox = `
+              
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Bitcoin</h5>
+                    <span class="text-sm leading-[1.3em]">Undisclosed balance</span>
+                  </div>
+                </div>`;
+
+            list.innerHTML += btcBox;
+
+            wallet_balance.forEach((ele) => {
+              console.log(ele);
+              container = `
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">${ele.Symbol}</h2>
+                  <div class="flex flex-col gap-1">
                     <h5 class="font-medium text-lg">${ele.currency_name}</h5>
-                    <span class="text-md">${ele.balance}</span>
+                    <span class="text-sm leading-[1.3em]">${ele.balance}</span>
+                  </div>
+                </div>
+              `;
+              list.innerHTML += container;
+            });
+            const closeCont = `</div>`;
+            list.innerHTML += closeCont;
+          } else {
+            const list = document.querySelector(".myRow");
+            container = `
+            
+              <div class="w-full text-center my-10">
+                <h5 class="text-white font-semibold">Your wallet has no token balance at this time</h5>
+              </div>
+              <div class="w-full grid grid-cols-1 md:grid-cols-4 p-5 gap-7">
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Bitcoin</h5>
+                    <span class="text-sm leading-[1.3em]">Undisclosed balance</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">ETH</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Ethereum</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">USDT</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Tether</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BNB</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Binance Coin</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">SOL</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Solana</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">LTC</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Litecoin</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">TRO</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">Tron</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
+                </div>
+                <div class="bg-white text-[#7084FF] col-span-1 flex items-center gap-4 border-[1.5px] border-[#ccc] px-3 py-5 rounded-lg">
+                  <h2 class="font-semibold text-xl">BUSD</h2>
+                  <div class="flex flex-col gap-1">
+                    <h5 class="font-medium text-lg">BUSD</h5>
+                    <span class="text-sm leading-[1.3em]">0.00</span>
+                  </div>
                 </div>
               </div>
             `;
-            list.innerHTML += container;
-          });
+            list.innerHTML = container;
+          }
         </script>
       </div>
     </div>
